@@ -115,11 +115,14 @@ class GoogleStaticMap
   # If proxy_address is set, set this to the port of the proxy server
   attr_accessor :proxy_port
 
+  # Google API key (https://developers.google.com/maps/documentation/staticmaps/#api_key)
+  attr_accessor :key
+
   # Takes an optional hash of attributes
   def initialize(attrs={})
     defaults = {:width => 500, :height => 350, :markers => [],
                 :sensor => false, :maptype => "roadmap", :paths => [],
-                :proxy_port => nil, :proxy_address => nil,}
+                :proxy_port => nil, :proxy_address => nil, :key => nil}
                 
     attributes = defaults.merge(attrs)
     attributes.each {|k,v| self.send("#{k}=".to_sym,v)}
@@ -142,7 +145,7 @@ class GoogleStaticMap
     u = "#{protocol}//maps.google.com/maps/api/staticmap?"
     attrs = GoogleStaticMapHelpers.safe_instance_variables(self,
               ["markers", "paths", "width", "height", "center",
-               "proxy_address", "proxy_port"],
+               "proxy_address", "proxy_port", "key"],
               :cgi_escape_values => true).to_a
     attrs << ["size", "#{@width}x#{@height}"] if @width && @height
     markers.each {|m| attrs << ["markers",m.to_s] }
