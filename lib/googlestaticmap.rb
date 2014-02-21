@@ -145,9 +145,10 @@ class GoogleStaticMap
     u = "#{protocol}//maps.google.com/maps/api/staticmap?"
     attrs = GoogleStaticMapHelpers.safe_instance_variables(self,
               ["markers", "paths", "width", "height", "center",
-               "proxy_address", "proxy_port"],
+               "proxy_address", "proxy_port", "key"],
               :cgi_escape_values => true).to_a
     attrs << ["size", "#{@width}x#{@height}"] if @width && @height
+    attrs << ["key", @key] unless @key.nil? or @key.blank?
     markers.each {|m| attrs << ["markers",m.to_s] }
     paths.each {|p| attrs << ["path",p.to_s] }
     attrs << ["center", center.to_s] if !center.nil?
